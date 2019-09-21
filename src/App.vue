@@ -1,12 +1,22 @@
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 import LoadingPage from './components/loadingPage.vue'
 export default {
     name: 'app',
     components:{
         LoadingPage,
     },
+    watch:{
+        errorTrigger(status){
+            if(!status) return;
+            // 如果頁面上有錯誤，導去錯誤處理頁
+            // this.$router.push("/error");
+        }
+    },
     computed:{
+        ...mapState([
+            'errorTrigger'
+        ]),
         ...mapGetters([
             'getWeatherItem'
         ]),

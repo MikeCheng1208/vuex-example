@@ -1,12 +1,16 @@
 import axios from 'axios';
-
+import handStatusError from './handStatusError.js';
+import handResponseError from "./handResponseError.js";
 const Domain = domain =>{
-    switch (location.hostname) {
-        case "localhost":
-            return '/';
-        default:
-            return domain;
+    if(process.env.NODE_ENV === 'development'){
+        switch (location.hostname) {
+            case "localhost":
+                return '/';
+            default:
+                return domain;
+        }
     }
+    return domain;
 }
 
 const weatherRequest = axios.create({
@@ -23,8 +27,10 @@ weatherRequest.interceptors.request.use(async request => {
 
 // http response 攔截器
 weatherRequest.interceptors.response.use(response  => {
+    // if(response.data.status !== "1") handResponseError(response);
     return Promise.resolve(response);
 }, error => {
+    handStatusError(error.response);
     return Promise.reject(error.response.data);
 })
 

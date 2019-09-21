@@ -11,7 +11,11 @@ export default {
             commit('weatherData', res.data);
             dispatch('handLoadingState', false);
         } catch (error) {
-            console.error(error);
+            dispatch('goBackError', true);
         }
     },
+    //錯誤處理狀態
+    goBackError({ commit }, bool){
+        commit("goBackError", bool);
+    }
 }
